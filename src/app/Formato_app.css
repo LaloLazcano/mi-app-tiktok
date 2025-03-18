@@ -1,0 +1,207 @@
+/* Contenedor principal */
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background-color: #3ecd59;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Barra de búsqueda */
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 100px; /* Ajustado el ancho de la barra de búsqueda */
+  margin-left: -140px; /* Recorre la barra de búsqueda hacia la izquierda */
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  padding-left: 35px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #aaa;
+}
+
+/* Contenedor de sugerencias de búsqueda */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 260%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.suggestion-item:hover {
+  background: #f0f0f0;
+}
+
+/* Botón de abrir biblioteca (menú hamburguesa) */
+.library-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px; /* Desplazado para que se abra desde el costado */
+  padding: 10px;
+  background-color: #2d873e;
+  color: white;
+  border: none;
+  border-radius: 50%; /* Borde redondeado */
+  cursor: pointer;
+  font-size: 20px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Estilo para la imagen */
+.image-side {
+  position: absolute;
+  top: 22px;
+  right: 27px;
+  width: 115px;
+  height: 37px;
+  object-fit: cover;
+}
+
+.library-toggle:hover {
+  background-color: #2d873e;
+}
+
+.library-toggle span {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Contenedor de la biblioteca de videos */
+.library {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  left: -250px; /* Inicia fuera de la pantalla */
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  border-top-right-radius: 15px; /* Bordes redondeados */
+  border-bottom-right-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.library.open {
+  left: 0; /* Desplazado cuando está abierto */
+}
+
+
+
+.library-item {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.library-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Contenedor del video */
+.video-container {
+  position: relative;
+  top: 10px;
+  width: 92%;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 35px;
+}
+
+.video-player {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Controles del video */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
+  max-width: 340px;
+  padding: 10px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-60%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  z-index: 10;
+  margin-left: 35px;
+  margin-right: 80px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #2d873e;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #57cf6d;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Estilo del texto */
+.video-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color: white;
+  margin-left: 10px;
+}

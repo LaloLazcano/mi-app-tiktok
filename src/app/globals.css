@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: black;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+  background-color: black;
+  touch-action: none; /* Evita que el navegador interfiera con los swipes */
+}
+

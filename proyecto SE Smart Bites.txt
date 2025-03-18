@@ -1,0 +1,10 @@
+PASOS PARA EJECUTAR PROYECTO
+
+1. Navegar al proyecto -> cd C:\Users\Dell G3 3590\swipe-app
+
+2. Ejecutar servidor (REACT-vite) - > npm run dev
+
+3. Abrir navegador -> ingresa el link generado
+
+
+limpiar cache -> npm cache clean --force
