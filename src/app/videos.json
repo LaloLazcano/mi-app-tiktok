@@ -2,25 +2,25 @@
     {
       "id": 1,
       "title": "Principales fallos en robots",
-      "url": "/videos/Video1.mp4",
+      "url": "https://res.cloudinary.com/dw5dqtyqi/video/upload/v1746837816/Video1_v1bybm.webm",
       "category": "Automat. Industrial"
     },
     {
       "id": 2,
       "title": "Velocidad de transmisión",
-      "url": "/videos/Video2.mp4",
+      "url": "https://res.cloudinary.com/dw5dqtyqi/video/upload/v1746837844/Video2_z5tt05.webm",
       "category": "Automat. Industrial"
     },
     {
         "id": 3,
         "title": "Motores IEC/NEMA",
-        "url": "/videos/Video3.mp4",
+        "url": "https://res.cloudinary.com/dw5dqtyqi/video/upload/v1746837796/Video3_el28q5.webm",
         "category": "Power Systems"
       },
       {
         "id": 4,
         "title": "Contactores: Diagrama unifilar",
-        "url": "/videos/Video4.mp4",
+        "url": "https://res.cloudinary.com/dw5dqtyqi/video/upload/v1746826098/Video4_d0xgdh.webm",
         "category": "Digital Energy"
       }
   ]
