@@ -10,11 +10,12 @@ const VideoSwipeApp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [favorites, setFavorites] = useState([]);
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
-  const [viewFavorites, setViewFavorites] = useState(false);
+  const [viewFavorites, setViewFavorites] = useState(false); // Estado para controlar la vista de favoritos
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [startTouch, setStartTouch] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSwipe = (direction) => {
     if (direction === 'up' && currentIndex < videos.length - 1) {
@@ -28,15 +29,6 @@ const VideoSwipeApp = () => {
     if (videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.addEventListener('ended', handleNextVideo);
-      return () => {
-        videoRef.current.removeEventListener('ended', handleNextVideo);
-      };
     }
   }, [currentIndex]);
 
@@ -69,6 +61,17 @@ const VideoSwipeApp = () => {
     video.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const uniqueCategories = [...new Set(videos.map((video) => video.category))];
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setIsLibraryOpen(false);
+    const firstVideoIndex = videos.findIndex((video) => video.category === category);
+    if (firstVideoIndex !== -1) {
+      setCurrentIndex(firstVideoIndex);
+    }
+  };
+
   const handleTouchStart = (e) => setStartTouch(e.touches[0].clientY);
   const handleTouchMove = (e) => {
     if (!startTouch) return;
@@ -79,14 +82,8 @@ const VideoSwipeApp = () => {
     }
   };
 
-  const handleNextVideo = () => {
-    if (currentIndex < videos.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const uniqueCategories = [...new Set(videos.map(video => video.category))];
-  const filteredLibrary = viewFavorites 
+  // Filtrado para mostrar solo los favoritos si la vista está activa
+  const filteredLibrary = viewFavorites
     ? videos.filter((video, index) => favorites.includes(index))
     : uniqueCategories;
 
@@ -97,7 +94,7 @@ const VideoSwipeApp = () => {
         <FaSearch className="search-icon" />
         <input
           type="text"
-          placeholder="Buscar..."
+          placeholder="Buscar videos..."
           value={searchTerm}
           onChange={handleSearch}
           className="search-bar"
@@ -137,6 +134,7 @@ const VideoSwipeApp = () => {
           {viewFavorites ? 'Ver todas las categorías' : 'Ver favoritos ★'}
         </button>
 
+        {/* Mostrar categorías o favoritos */}
         {viewFavorites && favorites.length === 0 ? (
           <p>Aún no tienes videos favoritos</p>
         ) : (
@@ -145,7 +143,9 @@ const VideoSwipeApp = () => {
               key={index}
               className="library-item"
               onClick={() => {
-                if (viewFavorites) {
+                if (!viewFavorites) {
+                  handleCategoryClick(item);
+                } else {
                   setCurrentIndex(videos.indexOf(item));
                 }
               }}
@@ -159,14 +159,14 @@ const VideoSwipeApp = () => {
       {/* Contenedor del video */}
       <div className="video-container" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
         <video
-       ref={videoRef}
-       src={videos[currentIndex].url}
-       muted
-       autoPlay
-       playsInline
-       onPlay={() => setIsPlaying(true)}
-       onPause={() => setIsPlaying(false)}
-       className="video-player"
+          ref={videoRef}
+          src={videos[currentIndex].url}
+          muted={muted}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          className="video-player"
+          loop
+          autoPlay
         />
       </div>
 
@@ -175,6 +175,7 @@ const VideoSwipeApp = () => {
         <button className="control-btn" onClick={togglePlayPause}>
           {isPlaying ? '||' : '▷'}
         </button>
+
         <button className="control-btn" onClick={toggleFavorite}>
           {favorites.includes(currentIndex) ? '★' : '☆'}
         </button>

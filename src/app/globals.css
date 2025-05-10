@@ -21,6 +21,6 @@ html, body {
   overflow: hidden;
   height: 100%;
   background-color: black;
-  touch-action: none; /* Evita que el navegador interfiera con los swipes */
+  touch-action: pan-y; /* Evita que el navegador interfiera con los swipes */
 }
 
