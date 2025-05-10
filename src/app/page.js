@@ -159,15 +159,14 @@ const VideoSwipeApp = () => {
       {/* Contenedor del video */}
       <div className="video-container" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
         <video
-         ref={videoRef}
-         src={videos[currentIndex].url}
-         muted={muted}
-         onPlay={() => setIsPlaying(true)}
-         onPause={() => setIsPlaying(false)}
-         playsInline
-         preload="none"
-         loop
-         className="video-player"
+       ref={videoRef}
+       src={videos[currentIndex].url}
+       muted
+       autoPlay
+       playsInline
+       onPlay={() => setIsPlaying(true)}
+       onPause={() => setIsPlaying(false)}
+       className="video-player"
         />
       </div>
 
