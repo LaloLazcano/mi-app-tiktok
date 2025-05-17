@@ -1,216 +1,278 @@
-/* Contenedor principal */
+/* Estilos principales */
 .app {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  position: relative;
   height: 100vh;
-  background-color: #3ecd59;
-  padding: 20px;
-  box-sizing: border-box;
-  position: relative;
-}
-
-/* Barra de búsqueda */
-.search-container {
-  position: relative;
-  width: 100%;
-  max-width: 100px; /* Ajustado el ancho de la barra de búsqueda */
-  margin-left: -140px; /* Recorre la barra de búsqueda hacia la izquierda */
-}
-
-.search-bar {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  padding-left: 35px;
-  outline: none;
-}
-
-.search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #aaa;
-}
-
-/* Contenedor de sugerencias de búsqueda */
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 260%;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.suggestion-item {
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.suggestion-item:hover {
-  background: #f0f0f0;
-}
-
-/* Botón de abrir biblioteca (menú hamburguesa) */
-.library-toggle {
-  position: absolute;
-  top: 20px;
-  left: 20px; /* Desplazado para que se abra desde el costado */
-  padding: 10px;
-  background-color: #2d873e;
-  color: white;
-  border: none;
-  border-radius: 50%; /* Borde redondeado */
-  cursor: pointer;
-  font-size: 20px;
-  height: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Estilo para la imagen */
-.image-side {
-  position: absolute;
-  top: 22px;
-  right: 27px;
-  width: 115px;
-  height: 37px;
-  object-fit: cover;
-}
-
-.library-toggle:hover {
-  background-color: #2d873e;
-}
-
-.library-toggle span {
-  width: 30px;
-  height: 4px;
-  background-color: white;
-  border-radius: 2px;
-}
-
-/* Contenedor de la biblioteca de videos */
-.library {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: fixed;
-  top: 0;
-  left: -250px; /* Inicia fuera de la pantalla */
-  width: 250px;
-  height: 100%;
-  background-color: #fff;
-  border-top-right-radius: 15px; /* Bordes redondeados */
-  border-bottom-right-radius: 15px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease;
-  z-index: 1000;
-}
-
-.library.open {
-  left: 0; /* Desplazado cuando está abierto */
-}
-
-
-
-.library-item {
-  padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.library-item:hover {
-  background-color: #f0f0f0;
-}
-
-.video-container {
-  position: relative;
-  top: 25px;
-  width: 100%;
-  max-width: 100%;
-  height: calc(100vh - 200px); /* Aumentado para dejar espacio a los controles */
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
+  background-color: black;
+  font-family: Arial, sans-serif;
 }
 
-
+/* Contenedor del video */
+.video-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
 
 .video-player {
   width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain; /* Asegura que no se distorsione */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  object-fit: cover;
 }
 
-
-
-/* Controles del video */
+/* Controles de video */
 .controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 12px 10px;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+}
+
+.controls-left {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-  width: 100%;
-  max-width: 340px;
-  padding: 10px;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-60%);
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  z-index: 10;
-  margin-left: 35px;
-  margin-right: 80px;
+  gap: 12px; /* espacio entre los botones */
+  margin-left: 12px; /* mueve todo el grupo a la derecha */
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #2d873e;
+.play-btn {
+  background: transparent;
   color: white;
   border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  margin-top: 3px;
+  font-size: 20px;     /* Más pequeño */
+  margin-right: 13px;  /* Espacio entre play y la estrella */
 }
 
-button:hover {
-  background-color: #57cf6d;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-/* Estilo del texto */
-.video-title {
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
+.favorite-btn {
+  background: transparent;
   color: white;
-  margin-left: 10px;
+  border: none;
+  font-size: 22px;     /* Puedes mantenerlo más grande si quieres */
 }
 
+
+
+
+.control-btn.play-pause {
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  margin-top: 6px; /* Ajusta este valor según necesites */
+}
+
+
+
+.video-title {
+  color: #3dcd57fc;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-grow: 1; /* que ocupe el espacio que sobra */
+}
+
+.search-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 150px; /* deja espacio para el botón biblioteca */
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px 8px;          /* menos padding para que sea más delgada */
+  border-radius: 10px;
+  height: 30px;              /* altura fija para hacerla delgada */
+  box-sizing: border-box;    /* que padding entre en la altura */
+}
+
+
+
+.search-icon {
+  color: white;
+  margin-right: 6px;
+  font-size: 18px;          /* haz el icono un poco más grande para que sea visible */
+  flex-shrink: 0;           /* que no se encoja */
+  height: 24px;
+  width: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: white;
+  padding: 6px;
+  outline: none;
+  font-size: 14px;
+}
+
+
+.search-suggestions {
+  position: absolute;
+  top: 45px;
+  left: 10px;
+  right: 10px;
+  background: white;
+  border-radius: 8px;
+  z-index: 20;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Botón biblioteca lateral */
+.library-toggle {
+  position: absolute;
+  top: 10px;
+  right: 100px;
+  background: none;
+  border: none;
+  font-size: 27px;
+  color: #3dcd57fc;
+  z-index: 19; /* POR ENCIMA de todo para poder abrir/cerrar */
+  cursor: pointer;
+}
+
+/* Imagen decorativa */
+.image-side {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  width: 98px;
+  height: auto;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+/* Biblioteca lateral */
+.library {
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 50%;
+  max-width: 300px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.801);
+  padding: 20px 15px;
+  transition: right 0.3s ease-in-out;
+  z-index: 20;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.library.open {
+  right: 0;
+}
+
+.library-item {
+  margin: 10px 0;
+  padding: 10px;
+  color: #ffffff; /* Texto blanco */
+  background-color: #3dcd57bd;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.library-item:hover {
+  background-color: #26913ab0;
+}
+
+.close-library {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #f8f5f5;
+  float: right;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.toggle-favorites {
+  background: #26913ab0;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  color: #ffffff; /* Texto blanco */
+   background: #207830cf;
+}
+
+
+.category-prompt {
+  font-size: 12px; 
+  color: #e7eff8; /* azul, puedes cambiarlo */
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.no-favorites-message {
+  font-size: 12px;
+  color: #fff4f4;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 200px) {
+  .search-container {
+    width: 65vw;
+    max-width: 250px;
+    padding: 4px 8px;
+  }
+
+
+
+  .search-container {
+    width: calc(100% - 120px);
+    max-width: 250px;
+    padding: 4px 8px;
+  }
+  
+
+  .search-bar {
+    font-size: 12px;
+  }
+
+  .control-btn {
+    font-size: 18px;
+  }
+
+  .library {
+    width: 85%;
+  }
+
+  .image-side {
+    width:80px;
+  }
+}

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import './Formato_app.css';
-import videos from './videos.json'; // Asumiendo que los videos están en un JSON
+import videos from './videos.json';
 import { FaSearch } from 'react-icons/fa';
 
 const VideoSwipeApp = () => {
@@ -10,12 +10,12 @@ const VideoSwipeApp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [favorites, setFavorites] = useState([]);
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
-  const [viewFavorites, setViewFavorites] = useState(false); // Estado para controlar la vista de favoritos
+  const [viewFavorites, setViewFavorites] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null); // ✅ AGREGADO PARA MANEJAR CATEGORÍA
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [startTouch, setStartTouch] = useState(0);
   const [muted, setMuted] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSwipe = (direction) => {
     if (direction === 'up' && currentIndex < videos.length - 1) {
@@ -29,6 +29,15 @@ const VideoSwipeApp = () => {
     if (videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.addEventListener('ended', handleNextVideo);
+      return () => {
+        videoRef.current.removeEventListener('ended', handleNextVideo);
+      };
     }
   }, [currentIndex]);
 
@@ -61,17 +70,6 @@ const VideoSwipeApp = () => {
     video.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const uniqueCategories = [...new Set(videos.map((video) => video.category))];
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setIsLibraryOpen(false);
-    const firstVideoIndex = videos.findIndex((video) => video.category === category);
-    if (firstVideoIndex !== -1) {
-      setCurrentIndex(firstVideoIndex);
-    }
-  };
-
   const handleTouchStart = (e) => setStartTouch(e.touches[0].clientY);
   const handleTouchMove = (e) => {
     if (!startTouch) return;
@@ -82,19 +80,31 @@ const VideoSwipeApp = () => {
     }
   };
 
-  // Filtrado para mostrar solo los favoritos si la vista está activa
-  const filteredLibrary = viewFavorites
-    ? videos.filter((video, index) => favorites.includes(index))
-    : uniqueCategories;
+  const handleNextVideo = () => {
+    if (currentIndex < videos.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const uniqueCategories = [...new Set(videos.map(video => video.category))]; // ✅ CATEGORÍAS ÚNICAS
+  const videosInCategory = selectedCategory
+    ? videos.filter(video => video.category === selectedCategory) // ✅ FILTRA POR CATEGORÍA
+    : [];
+  const favoriteVideos = favorites.map(index => videos[index]);
+
+  const libraryContent = viewFavorites
+    ? favoriteVideos
+    : selectedCategory
+      ? videosInCategory
+      : uniqueCategories;
 
   return (
     <div className="app">
-      {/* Barra de búsqueda */}
       <div className="search-container">
         <FaSearch className="search-icon" />
         <input
           type="text"
-          placeholder="Buscar videos..."
+          placeholder="Buscar..."
           value={searchTerm}
           onChange={handleSearch}
           className="search-bar"
@@ -105,8 +115,11 @@ const VideoSwipeApp = () => {
               <div
                 key={index}
                 className="suggestion-item"
-                onClick={() => setCurrentIndex(videos.indexOf(video))}
-              >
+                onClick={() => {
+                  setCurrentIndex(videos.indexOf(video));
+                  setSearchTerm(''); // <== Limpia la barra de búsqueda al hacer click
+                }}
+                >
                 {video.title}
               </div>
             ))}
@@ -114,71 +127,88 @@ const VideoSwipeApp = () => {
         )}
       </div>
 
-      {/* Botón para abrir la biblioteca */}
       <button className="library-toggle" onClick={() => setIsLibraryOpen(!isLibraryOpen)}>
         ☰
       </button>
 
-      {/* Imagen decorativa */}
-      <img src="/images/schneider2.jpg" alt="" className="image-side" />
+      <img src="/images/schneider2.png" alt="" className="image-side" />
 
-      {/* Biblioteca de videos */}
       <div className={`library ${isLibraryOpen ? 'open' : ''}`}>
-        {/* Botón de cerrar */}
         <button className="close-library" onClick={() => setIsLibraryOpen(false)}>
           ✖
         </button>
 
-        {/* Botón para cambiar entre categorías y favoritos */}
-        <button className="toggle-favorites" onClick={() => setViewFavorites(!viewFavorites)}>
+        <button
+          className="toggle-favorites"
+          onClick={() => {
+            setViewFavorites(!viewFavorites);
+            setSelectedCategory(null); // ✅ LIMPIA CATEGORÍA AL VER FAVORITOS
+          }}
+        >
           {viewFavorites ? 'Ver todas las categorías' : 'Ver favoritos ★'}
         </button>
 
-        {/* Mostrar categorías o favoritos */}
-        {viewFavorites && favorites.length === 0 ? (
-          <p>Aún no tienes videos favoritos</p>
-        ) : (
-          filteredLibrary.map((item, index) => (
+        {!viewFavorites && !selectedCategory && <p className="category-prompt">Selecciona una categoría:</p>}
+        {viewFavorites && favoriteVideos.length === 0 && (
+          <p className="no-favorites-message">Aún no tienes videos favoritos</p>
+
+        )}
+
+        <div>
+          {libraryContent.map((item, index) => (
             <div
               key={index}
               className="library-item"
               onClick={() => {
-                if (!viewFavorites) {
-                  handleCategoryClick(item);
+                if (viewFavorites || selectedCategory) {
+                  const videoIndex = videos.indexOf(item);
+                  setCurrentIndex(videoIndex);
+                  setIsLibraryOpen(false);
                 } else {
-                  setCurrentIndex(videos.indexOf(item));
+                  setSelectedCategory(item); // ✅ SELECCIÓN DE CATEGORÍA
                 }
               }}
             >
-              {viewFavorites ? item.title : item}
+              {viewFavorites || selectedCategory ? item.title : item}
             </div>
-          ))
-        )}
+          ))}
+        </div>
+
+        {selectedCategory && !viewFavorites && (
+  <button
+    className="toggle-favorites"
+    onClick={() => setSelectedCategory(null)}
+    style={{ marginTop: '10px' }}
+  >
+    ← Volver a categorías
+  </button>
+)}
+
+        
       </div>
 
-      {/* Contenedor del video */}
       <div className="video-container" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
         <video
           ref={videoRef}
           src={videos[currentIndex].url}
           muted={muted}
+          autoPlay
+          playsInline
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           className="video-player"
-          loop
-          autoPlay
         />
       </div>
 
-      {/* Controles de video */}
       <div className="controls">
-        <button className="control-btn" onClick={togglePlayPause}>
-          {isPlaying ? '||' : '▷'}
-        </button>
+      <button className="control-btn play-btn" onClick={togglePlayPause}>
+  {isPlaying ? '⏸' : '▷'}
+</button>
+<button className="control-btn favorite-btn" onClick={toggleFavorite}>
+  {favorites.includes(currentIndex) ? '★' : '☆'}
+</button>
 
-        <button className="control-btn" onClick={toggleFavorite}>
-          {favorites.includes(currentIndex) ? '★' : '☆'}
-        </button>
+
         <div className="video-title">{videos[currentIndex].title}</div>
       </div>
     </div>
