@@ -1,10 +1,19 @@
 /* Estilos principales */
 .app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
-  height: 100vh;
   overflow: hidden;
-  background-color: black;
-  font-family: Arial, sans-serif;
+}
+
+/* NUEVO: asegura altura y comportamiento adecuado en móviles */
+html, body {
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 /* Contenedor del video */
@@ -49,8 +58,9 @@
   color: white;
   border: none;
   margin-top: 3px;
-  font-size: 20px;     /* Más pequeño */
+  font-size: 18px;     /* Más pequeño */
   margin-right: 13px;  /* Espacio entre play y la estrella */
+  margin-left: 12px;
 }
 
 .favorite-btn {
@@ -85,7 +95,7 @@
 
 .search-container {
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 10px;
   right: 150px; /* deja espacio para el botón biblioteca */
   z-index: 11;
@@ -149,7 +159,7 @@
 /* Botón biblioteca lateral */
 .library-toggle {
   position: absolute;
-  top: 10px;
+  top: 14px;
   right: 100px;
   background: none;
   border: none;
@@ -162,9 +172,9 @@
 /* Imagen decorativa */
 .image-side {
   position: absolute;
-  top: 2px;
+  top: 8px;
   right: 1px;
-  width: 98px;
+  width: 100px;
   height: auto;
   border-radius: 10px;
   z-index: 10;

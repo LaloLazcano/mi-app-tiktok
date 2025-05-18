@@ -202,7 +202,7 @@ const VideoSwipeApp = () => {
 
       <div className="controls">
       <button className="control-btn play-btn" onClick={togglePlayPause}>
-  {isPlaying ? '⏸' : '▷'}
+  {isPlaying ? '❚❚' : '▶'}
 </button>
 <button className="control-btn favorite-btn" onClick={toggleFavorite}>
   {favorites.includes(currentIndex) ? '★' : '☆'}
